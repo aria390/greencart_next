@@ -1,7 +1,16 @@
+"use client";
+
 import React from "react";
 import myImg from "../img/logo-CMLzTNjw.svg";
+import IFIsLogin from "./IFIsLogin";
+import { useIsLogin } from "@/store/useIsLogin";
+import { useModule } from "@/store/useModule";
+import Link from "next/link";
 
 const Header = () => {
+  const { IsLogin } = useIsLogin();
+  const { setIsOpen } = useModule();
+
   return (
     <div className="flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 border-b border-gray-300">
       <span>
@@ -15,8 +24,12 @@ const Header = () => {
         <button className="border border-gray-300 px-3 py-1 rounded-full text-xs cursor-pointer opacity-80">
           Seller Dashboard
         </button>
-        <span className="cursor-pointer">Home</span>
-        <span className="cursor-pointer">All Product</span>
+        <Link href="/">
+          <span className="cursor-pointer">Home</span>
+        </Link>
+        <Link href="./allProducts">
+          <span className="cursor-pointer">All Product</span>
+        </Link>
         <div className="flex items-center text-sm gap-2 border border-gray-300 px-3 rounded-full max-lg:hidden">
           <input
             className="py-1.5 w-full bg-transparent outline-none placeholder-gray-500"
@@ -58,9 +71,18 @@ const Header = () => {
             0
           </button>
         </div>
-        <button className="cursor-pointer px-8 py-2 bg-green-500 hover:bg-green-600 transition text-white rounded-full">
-          Login
-        </button>
+        {IsLogin ? (
+          <IFIsLogin />
+        ) : (
+          <button
+            onClick={() => {
+              setIsOpen(true);
+            }}
+            className="cursor-pointer px-8 py-2 bg-green-500 transition bg-primary-dull text-white rounded-full"
+          >
+            Login
+          </button>
+        )}
       </div>
     </div>
   );
